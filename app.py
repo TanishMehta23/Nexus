@@ -1,4 +1,4 @@
-from llm.gemini import ask_gemini
+from agents.agent import process_request
 from memory.conversation import (
     add_user_message,
     add_assistant_message,
@@ -20,7 +20,7 @@ def main():
 
         try:
             add_user_message(prompt)
-            answer = ask_gemini(prompt)
+            answer = process_request(prompt)
             add_assistant_message(answer)
             print(f"\nNexus AI: {answer}\n")
 
