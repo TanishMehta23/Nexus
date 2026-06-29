@@ -1,15 +1,32 @@
-from llm.gemini import ask_gemini
-from tools.registry import TOOLS
+from llm.gemini_function_call import (
+    get_function_call,
+    generate_final_response,
+)
+
+from tools.executor import execute_tool
 
 
-def process_request(prompt: str):
+def process_request(user_prompt: str):
 
-    prompt_lower = prompt.lower()
+    response = get_function_call(user_prompt)
 
-    if prompt_lower.startswith("open "):
+    part = response.candidates[0].content.parts[0]
 
-        app = prompt_lower.replace("open ", "").strip()
+    # Normal Chat
+    if not part.function_call:
+        return response.text
 
-        return TOOLS["open_application"](app)
+    # Function Calling
+    tool_name = part.function_call.name
 
-    return ask_gemini(prompt)
+    args = dict(part.function_call.args)
+
+    tool_result = execute_tool(
+        tool_name,
+        **args
+    )
+
+    return generate_final_response(
+        user_prompt,
+        tool_result,
+    )

@@ -1,15 +1,19 @@
 import subprocess
-
-from tools.app_finder import find_application
-
-
-import subprocess
 import os
 
 from tools.app_finder import find_application
 
 
-def open_application(app_name):
+def open_application(app_name: str) -> str:
+    """
+    Open an installed Windows application.
+
+    Args:
+        app_name: Name of the application.
+
+    Returns:
+        Status message.
+    """
 
     if app_name.lower() == "spotify":
         os.startfile("spotify:")
@@ -18,7 +22,7 @@ def open_application(app_name):
     path = find_application(app_name)
 
     if path is None:
-        return f"Couldn't find {app_name}"
+        return f"Couldn't find '{app_name}'."
 
     subprocess.Popen(path)
 
