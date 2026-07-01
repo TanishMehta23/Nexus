@@ -23,8 +23,30 @@ function = types.FunctionDeclaration(
     },
 )
 
+remember_function = types.FunctionDeclaration(
+    name="remember",
+    description="Store an important fact about the user for future conversations.",
+    parameters_json_schema={
+        "type": "object",
+        "properties": {
+            "memory_key": {
+                "type": "string",
+                "description": "The name of the memory."
+            },
+            "memory_value": {
+                "type": "string",
+                "description": "The value to remember."
+            }
+        },
+        "required": ["memory_key", "memory_value"]
+    },
+)
+
 tool = types.Tool(
-    function_declarations=[function]
+    function_declarations=[
+        function,
+        remember_function,
+    ]
 )
 
 
@@ -83,3 +105,4 @@ Respond naturally to the user.
     )
 
     return response.text
+

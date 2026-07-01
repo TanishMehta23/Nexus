@@ -27,3 +27,22 @@ def open_application(app_name: str) -> str:
     subprocess.Popen(path)
 
     return f"{app_name} opened successfully."
+
+from database.memory import save_memory
+
+
+def remember(memory_key: str, memory_value: str) -> str:
+    """
+    Save an important fact about the user.
+
+    Args:
+        memory_key: Name of the memory.
+        memory_value: Value to remember.
+
+    Returns:
+        Status message.
+    """
+
+    save_memory(memory_key, memory_value)
+
+    return f"Remembered {memory_key}."
